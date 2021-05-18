@@ -1,9 +1,58 @@
+<nav class="bg-gray-100 grid grid-cols-3 h-16 border-t border-gray-400 shadow-xl">
 
+	<a href="/"
+		class="flex flex-col justify-center items-center <%= active === 'score' ? 'text-gray-800' : 'text-gray-500' %>">
+	<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<path
+			d="M12.552 8C11.9997 8 11.552 8.44772 11.552 9C11.552 9.55228 11.9997 10 12.552 10H16.552C17.1043 10 17.552 9.55228 17.552 9C17.552 8.44772 17.1043 8 16.552 8H12.552Z"
+			fill="currentColor" fill-opacity="0.5" />
+		<path
+			d="M12.552 17C11.9997 17 11.552 17.4477 11.552 18C11.552 18.5523 11.9997 19 12.552 19H16.552C17.1043 19 17.552 18.5523 17.552 18C17.552 17.4477 17.1043 17 16.552 17H12.552Z"
+			fill="currentColor" fill-opacity="0.5" />
+		<path
+			d="M12.552 5C11.9997 5 11.552 5.44772 11.552 6C11.552 6.55228 11.9997 7 12.552 7H20.552C21.1043 7 21.552 6.55228 21.552 6C21.552 5.44772 21.1043 5 20.552 5H12.552Z"
+			fill="currentColor" fill-opacity="0.8" />
+		<path
+			d="M12.552 14C11.9997 14 11.552 14.4477 11.552 15C11.552 15.5523 11.9997 16 12.552 16H20.552C21.1043 16 21.552 15.5523 21.552 15C21.552 14.4477 21.1043 14 20.552 14H12.552Z"
+			fill="currentColor" fill-opacity="0.8" />
+		<path
+			d="M3.448 4.00208C2.89571 4.00208 2.448 4.44979 2.448 5.00208V10.0021C2.448 10.5544 2.89571 11.0021 3.448 11.0021H8.448C9.00028 11.0021 9.448 10.5544 9.448 10.0021V5.00208C9.448 4.44979 9.00028 4.00208 8.448 4.00208H3.448Z"
+			fill="currentColor" />
+		<path
+			d="M3.448 12.9979C2.89571 12.9979 2.448 13.4456 2.448 13.9979V18.9979C2.448 19.5502 2.89571 19.9979 3.448 19.9979H8.448C9.00028 19.9979 9.448 19.5502 9.448 18.9979V13.9979C9.448 13.4456 9.00028 12.9979 8.448 12.9979H3.448Z"
+			fill="currentColor" />
+	</svg>
+	<span class="text-xs <%= active === 'score' ? 'text-gray-900 font-semibold' : 'text-gray-700' %>">Stiling</span>
+	</a>
 
+	<a href="/match"
+		class="flex flex-col justify-center items-center <%= active === 'match' ? 'text-gray-800' : 'text-gray-500' %>">
+		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path
+				d="M12 14C13.1046 14 14 13.1046 14 12C14 10.8954 13.1046 10 12 10C10.8954 10 10 10.8954 10 12C10 13.1046 10.8954 14 12 14Z"
+				fill="currentColor" />
+			<path fill-rule="evenodd" clip-rule="evenodd"
+				d="M12 22C6.47716 22 2 17.5228 2 12C2 6.47717 6.47716 2 12 2C17.5228 2 22 6.47717 22 12C22 17.5228 17.5228 22 12 22ZM9.0307 19.4308C9.01047 19.29 9 19.1462 9 19C9 17.3431 10.3431 16 12 16C13.6569 16 15 17.3431 15 19C15 19.1462 14.9895 19.29 14.9693 19.4308C16.9993 18.6189 18.619 16.9993 19.4308 14.9692C19.2901 14.9895 19.1463 15 19 15C17.3431 15 16 13.6569 16 12C16 10.3431 17.3431 9 19 9C19.0637 9 19.127 9.00195 19.1897 9.00586C19.271 9.01099 19.3514 9.01929 19.4308 9.03076C18.6189 7.00073 16.9993 5.3811 14.9693 4.56921C14.9895 4.70996 15 4.85376 15 5C15 6.65686 13.6569 8 12 8C10.3431 8 9 6.65686 9 5C9 4.85376 9.01048 4.70996 9.03072 4.56921C7.0007 5.3811 5.38106 7.00073 4.56915 9.03076C4.64857 9.01929 4.729 9.01099 4.8103 9.00586C4.87303 9.00195 4.93628 9 5 9C6.65686 9 8 10.3431 8 12C8 13.6569 6.65686 15 5 15C4.8537 15 4.70985 14.9895 4.56915 14.9692C5.38104 16.9993 7.00069 18.6189 9.0307 19.4308Z"
+				fill="currentColor" />
+		</svg>
+		<span class="text-xs <%= active === 'match' ? 'text-gray-900' : 'text-gray-700' %>">Kampnr.</span>
+	</a>
 
+	<a href="/placement"
+		class="flex flex-col justify-center items-center <%= active === 'placement' ? 'text-gray-800' : 'text-gray-500' %>">
 
-<nav class="bg-gray-100 h-24">
-	<div class="w-full h-0.5 bg-indigo-600 opacity-75"></div>
+		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M5 9V7H7V9H5Z" fill="currentColor" />
+			<path d="M9 9H19V7H9V9Z" fill="currentColor" />
+			<path d="M5 15V17H7V15H5Z" fill="currentColor" />
+			<path d="M19 17H9V15H19V17Z" fill="currentColor" />
+			<path fill-rule="evenodd" clip-rule="evenodd"
+				d="M1 6C1 4.34315 2.34315 3 4 3H20C21.6569 3 23 4.34315 23 6V18C23 19.6569 21.6569 21 20 21H4C2.34315 21 1 19.6569 1 18V6ZM4 5H20C20.5523 5 21 5.44772 21 6V11H3V6C3 5.44772 3.44772 5 4 5ZM3 13V18C3 18.5523 3.44772 19 4 19H20C20.5523 19 21 18.5523 21 18V13H3Z"
+				fill="currentColor" />
+		</svg>
+		<span
+			class="text-xs <%= active === 'placement' ? 'text-gray-900 font-semibold' : 'text-gray-700' %>">Placering</span>
+	</a>
 
 
 </nav>

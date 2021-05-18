@@ -25,15 +25,51 @@ app.get('/', async(req, res) => {
    const score = await cacheClient.get("score");
    const meta = await cacheClient.get("meta");
 
-	const parsedScore = JSON.parse(score);
-    console.log(parsedScore, 'parsedScore');
 	const parsedMeta = JSON.parse(meta);
-    console.log(parsedMeta, 'parsedMeta');
-	res.render('pages/index', {
-		title: 'Oddsman',
-	});
-});
+	let playerArray = JSON.parse(score);
 
+	let sort = req.query.sort;
+
+	if (sort) {
+		switch (sort) {
+			case 'week':
+				playerArray = playerArray.sort((a, b) => a.pointsInCurrentWeek > b.pointsInCurrentWeek ? -1 : 1);
+				break;
+			case 'correct':
+				playerArray = playerArray.sort((a, b) => a.correctBets > b.correctBets ? -1 : 1);
+				break;
+			case 'name':
+				playerArray = playerArray.sort((a, b) => a.name > b.name ? 1 : -1);
+				break;
+			default:
+				playerArray = playerArray.sort((a, b) => a.position > b.position ? 1 : -1);
+				break;
+		}
+	}
+
+	res.render('pages/index', {
+		data: playerArray,
+		meta: parsedMeta,		
+	});
+});	
+
+app.get('/match', async(req, res) => {
+	res.render('pages/match', {
+		data: 'test',
+	});
+});	
+
+app.get('/placement', async(req, res) => {
+	res.render('pages/placement', {
+		data: 'test',
+	});
+});	
+	
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`)
 });
+
+
+/*{
+	title: 'Oddsman',
+}*/
