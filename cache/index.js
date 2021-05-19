@@ -1,20 +1,7 @@
-const redis = require("redis");
+const NodeCache = require( "node-cache" );
 
-const PORT = 6379;
-
-const init = (onConnect) => {
-	const client = redis.createClient(PORT);
-
-	client.on("connect", function() {
-		console.info('Connected Redis client');
-		onConnect(client);
-	});
-	
-	client.on("error", function() {		
-		console.error('Redis error' ,error);
-	});
-
-	return client;
+const init = () => {
+	return new NodeCache()
 }
 
 module.exports = init;

@@ -1,4 +1,4 @@
-const { Player, MetaData, Result } = require('./document.js');
+const { Player, MetaData, Result, Bets } = require('./document.js');
 const { parseCommaFloat } = require('../util.js');
 
 const puppeteer = require('puppeteer');
@@ -36,7 +36,6 @@ const scraper = (async(lastUpdated) => {
   
   const meta = new MetaData(metaData);
 
-  debugger;
   if (meta.lastUpdated.getTime() === lastUpdated?.getTime()) {
 	await browser.close();
 	return new Result(false);
@@ -54,6 +53,58 @@ const scraper = (async(lastUpdated) => {
 			});
 		});
   });
+
+  await page.goto('http://theoddsman.dk/AlleOdds_pl.htm', {
+    waitUntil: 'networkidle2',
+  });
+
+  
+  const rawBets = await page.$$eval('tbody tr', rows => {
+	const filtered = rows.filter((r, index) => index > 4 && index <= 121);
+	return filtered.map((r) => {
+		const cells = r.querySelectorAll('td');
+		return Array.from(cells).map(td => {
+			return td.innerText;
+		});
+	});
+});
+
+const buildBets = (rawBets) => {
+	let lastSeenMatchDay = '';
+	return rawBets.map((listProperties) => {
+		const bets = new Bets();
+
+		bets.hit = parseInt(listProperties[0]) > 0;
+		const user = listProperties[1].split(' ');
+		bets.position = parseInt(user[0].replace('.', ''))
+		bets.initials = user[1];
+
+		const matchNo = parseInt(listProperties[2]);
+		bets.matchNumber = matchNo === 0 ? '?' : matchNo;
+
+		bets.betValue = listProperties[3] == 0 ? '' : listProperties[3];
+
+		bets.odds = parseCommaFloat(listProperties[4]);
+		bets.result = (listProperties[5] + listProperties[6]) || '-';
+
+		bets.hasResult = bets.result !== '-';
+
+		bets.description = listProperties[7];
+
+		const matchDayVal = listProperties[8];
+
+		if (matchDayVal === '|') {
+			bets.matchDay = lastSeenMatchDay;
+		} else {
+			bets.matchDay = matchDayVal;
+			lastSeenMatchDay = matchDayVal;
+		}
+
+		bets.matchStart = listProperties[9]
+		bets.matchEnd = listProperties[10]
+		return bets;
+	})
+}
 
 
   const buildPlayers = (rawPlayers) => {
@@ -79,10 +130,11 @@ const scraper = (async(lastUpdated) => {
  
 
   const score = buildPlayers(rawPlayers);
+  const bets = buildBets(rawBets);
   
   await browser.close();
 
-  return new Result(true, meta, score);
+  return new Result(true, meta, score, bets);
 });
 
 module.exports = scraper;

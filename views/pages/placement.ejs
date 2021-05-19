@@ -12,16 +12,100 @@
 </head>
 
 <body>
+	<div class="max-w-screen-sm flex flex-col justify-between h-screen bg-gray-200">
 
-	<div class="max-w-screen-sm flex flex-col justify-between h-screen bg-gray-300">
-		placement!
+		<div class="bg-gray-50 flex items-center px-1.5 py-1">
+			<div class="flex items-center">
+				<h1 class=" font-bold text-2xl leading-9 uppercase text-gray-800 tracking-tight">Placering</h1>
+			</div>
+		</div>
 
+
+
+		<nav class="h-full overflow-y-auto" aria-label="Directory">
+			<div class="relative">
+				<% data.forEach(function(user, index){ %>
+					<div
+						class="z-10 sticky flex top-0 border-t border-b border-gray-200 bg-gray-50 px-3 py-1 text-sm font-medium text-gray-500">
+						<h3>
+							<%= user.key %>
+						</h3>
+
+						<div></div>
+
+						<ul class="flex items-center ml-3 space-x-3">
+						<% user.correctDots.forEach(function(dot, index){ %>
+
+							<li>
+							<%if (dot === 'UNKNOWN') { %>
+								<span class="bg-gray-500 block h-4 w-4 rounded-full border-2 border-gray-300"></span>
+								 %>
+									<% } else if(dot === 'HIT'){ %>
+										<span class="bg-green-500 block h-4 w-4 rounded-full border-2 border-green-300"></span>
+										<% } else{ %>
+											<span class="bg-red-500 block h-4 w-4 rounded-full border-2 border-red-300"></span>
+											<% } %>
+
+										</li>
+							<% }); %>
+						</ul>
+					</div>
+					<ul class="relative z-0 divide-y divide-gray-200">
+						<% user.items.forEach(function(bet, index){ %>
+							<li class="bg-white">
+
+								<div class="flex flex-col">
+									<div class="flex text-xs font-semibold">
+										<span
+											class="text-sm text-gray-700 w-8 h-8 rounded-lg m-1 bg-gray-100 flex items-center justify-center">
+											<%= bet.matchNumber %>
+										</span>
+
+										<div class="flex justify-center flex-1 flex-col p-1">
+											<span>
+												<%= bet.description %> <span>
+														<%= bet.betValue %>
+													</span>
+											</span>
+											<%if (!bet.result) { %>
+												<span class=" text-gray-500">
+													<%= bet.matchDay %>
+														<%= bet.matchStart %>-<%= bet.matchEnd %>
+												</span>
+
+												<% } %>
+
+										</div>
+
+										<div class="flex items-center justify-center flex-col border-l w-12">
+											<span class="text-gray-500">
+												<%= bet.result %>
+											</span>
+										</div>
+
+										<div class="flex items-center justify-center flex-col border-l w-12">
+											<span
+												class="<%= bet.hasResult ? bet.hit ? 'text-green-500' : 'text-red-500' : '-' %>">
+												<%= bet.odds.toLocaleString('da-DK', { minimumIntegerDigits: 1,
+													minimumFractionDigits: 2 }) %>
+											</span>
+
+										</div>
+									</div>
+								</div>
+							</li>
+							<% }); %>
+					</ul>
+					<% }); %>
+			</div>
+		</nav>
 
 
 		<%- include('../partials/footer', { active: 'placement' }); %>
-
-
 	</div>
+
+
+
 </body>
 
 </html>

@@ -21,6 +21,25 @@ class Player {
 	}
 }
 
+class Bets {
+	constructor() {
+		this.hit = false;
+		this.hasResult = false;
+		this.position = 0;
+		this.initials = '';
+		this.matchNumber = 0;
+		this.betValue = ''; // 1 x 2
+		this.odds = 0;
+		this.result = 0;
+		this.description;
+		this.matchDay;
+		this.matchStart;
+		this.matchEnd;
+	}
+
+
+}
+
 class MetaData {
 	constructor(domObject) {
 		this.startWeek = 2;
@@ -45,15 +64,17 @@ class MetaData {
 }
 
 class Result {
-	constructor(wasUpdated, meta = null, score = null) {
+	constructor(wasUpdated, meta = null, score = null, bets = null) {
 		this.wasUpdated = wasUpdated;
 		this.meta = meta;
 		this.score = score;
+		this.bets = bets;
 	}
 }
 
 module.exports = {
 	Player,
 	MetaData,
+	Bets,
 	Result
 }
