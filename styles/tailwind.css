@@ -1,3 +1,46 @@
 @tailwind base; 
 @tailwind components; 
 @tailwind utilities;
+
+@layer components {
+	.headline-anim {
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-image: linear-gradient(90deg , #059669, #10B981);
+		z-index: 1;
+		text-rendering: optimizeLegibility;
+		color: black;
+		text-align: center;
+		font-size: 2rem;
+		line-height: 1;
+		font-weight: 800;
+		position: relative;
+		display: block;
+	}
+
+	.headline::before {
+		content: var(--content);
+		position: absolute;
+		display: block;
+		width: 100%;
+		font-size: 2rem;
+		line-height: 1;
+		font-weight: 800;
+		text-align: center;
+		color: black;
+		top: 0;
+		animation: fade-bg-text 8s infinite;
+		bottom: 0;
+		left: 0;
+		z-index: 2;
+	}
+
+	@keyframes fade-bg-text {
+		0%, 16.667%, 100% {
+			opacity: 1;
+		}
+		33.333%, 83.333% {
+			opacity: 0;
+		}
+	}
+}

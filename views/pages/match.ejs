@@ -12,16 +12,92 @@
 </head>
 
 <body>
+	<div class="max-w-screen-sm flex flex-col justify-between h-screen bg-gray-200">
 
-	<div class="max-w-screen-sm flex flex-col justify-between h-screen bg-gray-300">
-		Match!
+		<div class="bg-gray-50 flex items-center p-4">
+			<div class="flex items-center">
+				<h1 class=" font-bold text-2xl leading-9 uppercase relative tracking-tight">
+					<span class="headline" style="--content: 'Kampnr.'">
+						<span class="headline-anim">Kampnr.</span>
+					</span>
+				</h1>
+			</div>
+		</div>
 
+
+
+		<nav class="h-full overflow-y-auto" aria-label="Directory">
+			<div class="relative">
+				<% data.forEach(function(item, index){ %>
+					<div
+						class="z-10 sticky flex  top-0 border-t border-b border-gray-200 bg-gray-50  text-sm font-medium text-gray-500">
+						<div class="flex flex-1 justify-between ">
+
+							<div class="flex px-3 py-1">
+								<div class="w-12 text-gray-900">
+									#<%= item.key.matchNumber %>
+								</div>
+
+								<div class="w-full text-gray-900 flex-1">
+									<%= item.key.description %>
+								</div>
+							</div>
+
+							<div class="flex">
+								<%if (!item.key.result) { %>
+									<span class=" text-gray-500 w-24 text-xs border-l flex items-center justify-center">
+										<%= item.key.matchDay %>
+											<%= item.key.matchStart %>
+									</span>
+
+									<% } else{ %>
+
+										<div class="w-12 border-l flex items-center justify-center">
+											<%= item.key.result %>
+										</div>
+										<% } %>
+							</div>
+						</div>
+					</div>
+					<ul class="relative z-0 divide-y divide-gray-200">
+						<% item.players.forEach(function(bet, index){ %>
+							<li class="bg-white">
+
+								<div class="flex flex-col">
+									<div class="flex text-xs font-semibold">
+										<span class="text-gray-500 py-1 px-3">
+											<%= bet.position %>.
+												<%= bet.initials %>
+										</span>
+
+										<div class="flex items-center justify-center flex-col ml-auto border-l w-12">
+											<%= bet.betValue %>
+
+										</div>
+
+
+										<div class="flex items-center justify-center flex-col border-l w-12">
+											<span
+												class="<%= bet.hasResult ? bet.hit ? 'text-green-500' : 'text-red-500' : '-' %>">
+												<%= bet.odds.toLocaleString('da-DK', { minimumIntegerDigits: 1,
+													minimumFractionDigits: 2 }) %>
+											</span>
+										</div>
+									</div>
+								</div>
+							</li>
+							<% }); %>
+					</ul>
+					<% }); %>
+			</div>
+		</nav>
 
 
 		<%- include('../partials/footer', { active: 'match' }); %>
-
-
 	</div>
+
+
+
 </body>
 
 </html>

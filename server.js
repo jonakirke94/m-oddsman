@@ -59,8 +59,17 @@ app.get('/match', (req, res) => {
 	const parsedBets = JSON.parse(bets);
 	const groupedByBet = groupBy(parsedBets, 'matchNumber');
 
+	const mapped = [];
+
+	Object.keys(groupedByBet).map(function(key) {
+		mapped.push({
+			key: groupedByBet[key][0],
+			players: groupedByBet[key],
+		})
+	});
+
 	res.render('pages/match', {
-		data: groupedByBet,
+		data: mapped ,
 	});
 });	
 
@@ -70,7 +79,7 @@ app.get('/placement', (req, res) => {
 	const groupedByPosition = groupBy(parsedBets, 'position');
 	const mapped = [];
 
-	Object.keys(groupedByPosition).map(function(key, index) {
+	Object.keys(groupedByPosition).map(function(key) {
 		mapped.push({
 			key: `${key}. ${groupedByPosition[key][0].initials}`,
 			items: groupedByPosition[key],
