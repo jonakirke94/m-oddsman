@@ -16,15 +16,14 @@
 	<div class="max-w-screen-sm flex flex-col justify-between h-screen bg-gray-200">
 
 		<div class="bg-gray-50 flex items-center p-4">
-			<div class="flex items-center">
+			<div class="flex items-end">
 				<h1 class=" font-bold text-2xl leading-9 uppercase relative tracking-tight">
 					<span class="headline" style="--content: 'Stilling'">
 						<span class="headline-anim">Stilling</span>
 					</span>
 				</h1>
-				<!--<%= meta.isSprintWeek %>-->
-				<i class="mx-2">•</i>
-				<span class="leading-3 text-base font-semibold">
+
+				<span class="leading-3 mb-1 ml-1.5 text-base font-semibold">
 					UGE <%= meta.currentWeek %></span>
 			</div>
 			<%if (meta.isSprintWeek) { %>
@@ -38,25 +37,23 @@
 			<table class="w-full relative">
 				<thead>
 					<tr class="py-4 mx-2 ">
-						<th class="bg-gray-200 py-1.5 font-semibold z-10 sticky top-0 uppercase text-base w-10 <%= sort.key === 'pos' ? 'text-blue-700' : '' %>">
+						<th
+							class="bg-gray-200 py-1.5 font-semibold z-10 sticky top-0 uppercase text-base w-10 <%= sort.key === 'pos' ? 'text-blue-700' : '' %>">
 							<a href="/?sort=pos&dir=<%=sort.key === 'pos' ? (sort.dir * -1) : '1'%>">
 								#
 							</a>
 						</th>
-						<th class="bg-gray-200 font-semibold z-10 sticky top-0 uppercase text-xs text-left <%= sort.key === 'name' ? 'text-blue-700' : '' %>">
+						<th
+							class="bg-gray-200 font-semibold z-10 sticky top-0 uppercase text-xs text-left <%= sort.key === 'name' ? 'text-blue-700' : '' %>">
 							<a href="/?sort=name&dir=<%=sort.key === 'name' ? (sort.dir * -1) : '1'%>">
 
 								Deltager
 							</a>
 						</th>
-						<th class="bg-gray-200 font-semibold z-10 sticky top-0 uppercase text-xs w-14 text-right pr-2 <%= sort.key === 'correct' ? 'text-blue-700' : '' %>">
+						<th
+							class="bg-gray-200 font-semibold z-10 sticky top-0 uppercase text-xs w-14 text-right pr-2 <%= sort.key === 'correct' ? 'text-blue-700' : '' %>">
 							<a href="/?sort=correct&dir=<%=sort.key === 'correct' ? (sort.dir * -1) : '1'%>">
 								Rigtige
-							</a>
-						</th>
-						<th class="bg-gray-200 font-semibold z-10 sticky top-0 uppercase text-xs w-16 text-right pr-2 <%= sort.key === 'week' ? 'text-blue-700' : '' %>">
-							<a href="/?sort=week&dir=<%=sort.key === 'week' ? (sort.dir * -1) : '1'%>">
-								Uge <%=meta.currentWeek %>
 							</a>
 						</th>
 						<th class="bg-gray-200 font-semibold z-10 sticky top-0 uppercase text-xs w-14 text-right pr-2">
@@ -64,6 +61,13 @@
 								Points
 							</a>
 						</th>
+						<th
+							class="bg-gray-200 font-semibold z-10 sticky top-0 uppercase text-xs w-16 text-right pr-2 <%= sort.key === 'week' ? 'text-blue-700' : '' %>">
+							<a href="/?sort=week&dir=<%=sort.key === 'week' ? (sort.dir * -1) : '1'%>">
+								Uge <%=meta.currentWeek %>
+							</a>
+						</th>
+				
 					</tr>
 				</thead>
 
@@ -98,7 +102,12 @@
 
 							</td>
 
-							<td class="w-16 text-xs font-semibold text-right pr-2">
+							<td class="w-14 text-xs font-bold text-right pr-2">
+								<%= user.points.toLocaleString('da-DK', { minimumIntegerDigits: 2,
+									minimumFractionDigits: 2 }) %>
+							</td>
+
+							<td class="w-16 text-xs text-right pr-2">
 								<%if (Number(user.pointsInCurrentWeek)> 0) { %>
 									<%= user.pointsInCurrentWeek.toLocaleString('da-DK', { minimumIntegerDigits: 1,
 										minimumFractionDigits: 2 }) %>
@@ -108,10 +117,7 @@
 							</td>
 
 
-							<td class="w-14 text-xs font-semibold text-right pr-2">
-								<%= user.points.toLocaleString('da-DK', { minimumIntegerDigits: 2,
-									minimumFractionDigits: 2 }) %>
-							</td>
+						
 
 						</tr>
 						<% }); %>
