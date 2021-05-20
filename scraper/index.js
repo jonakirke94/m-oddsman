@@ -1,12 +1,26 @@
 const { Player, MetaData, Result, Bets } = require('./document.js');
 const { parseCommaFloat } = require('../util.js');
 
-const puppeteer = require('puppeteer');
+let chrome = {};
+let puppeteer;
+
+if (process.env.prod) {
+	// running on the Vercel platform.
+	chrome = require('chrome-aws-lambda');
+	puppeteer = require('puppeteer-core');
+  } else {
+	// running locally.
+	puppeteer = require('puppeteer');
+  }
 
 const scraper = (async(lastUpdated) => {
    
 
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+	args: [...chrome.args, '--hide-scrollbars', '--disable-web-security'],
+	headless: true,
+	ignoreHTTPSErrors: true,
+  });
   const page = await browser.newPage();
   
   await page.goto('http://theoddsman.dk/Stilling.htm', {
