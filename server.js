@@ -1,15 +1,11 @@
 const express = require('express');
-const initCache = require('./cache/index.js');
 const groupBy = require('lodash.groupby');
-const { runUpdaters, scheduleUpdaters } = require('./index.js');
+const { runUpdaters } = require('./index.js');
+const path = require('path');
 
 const app = express();
 
-const cacheClient = initCache();
-
-runUpdaters(cacheClient);
-scheduleUpdaters(cacheClient);
-
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 const port = 3000;
@@ -17,12 +13,8 @@ const port = 3000;
 /*https://stackoverflow.com/questions/18629327/adding-css-file-to-ejs*/
 app.use(express.static(__dirname + '/public'));
 
-app.get('/', (req, res) => {
-   const score = cacheClient.get("score");
-   const meta = cacheClient.get("meta");
-
-	const parsedMeta = JSON.parse(meta);
-	let playerArray = JSON.parse(score);
+app.get('/', async(req, res) => {
+   let { meta, score } = await runUpdaters();
 
 	let sort = req.query.sort;
 	let dir = req.query.dir || -1;
@@ -30,23 +22,24 @@ app.get('/', (req, res) => {
 	if (sort) {
 		switch (sort) {
 			case 'week':
-				playerArray = playerArray.sort((a, b) => a.pointsInCurrentWeek < b.pointsInCurrentWeek ? 1 * dir : -1 * dir);
+				score = score.sort((a, b) => a.pointsInCurrentWeek < b.pointsInCurrentWeek ? 1 * dir : -1 * dir);
 				break;
 			case 'correct':
-				playerArray = playerArray.sort((a, b) => a.correctBets < b.correctBets ? 1 * dir : -1 * dir);
+				score = score.sort((a, b) => a.correctBets < b.correctBets ? 1 * dir : -1 * dir);
 				break;
 			case 'name':
-				playerArray = playerArray.sort((a, b) => a.name > b.name ? 1 * dir : -1 * dir);
+				score = score.sort((a, b) => a.name > b.name ? 1 * dir : -1 * dir);
 				break;
 			default:
-				playerArray = playerArray.sort((a, b) => a.position < b.position ? 1 * dir : -1 * dir);
+				score = score.sort((a, b) => a.position < b.position ? 1 * dir : -1 * dir);
 				break;
 		}
 	}
 
+	res.setHeader('Cache-Control', 's-max-age=600, stale-while-revalidate')
 	res.render('pages/index', {
-		data: playerArray,
-		meta: parsedMeta,
+		data: score,
+		meta: meta,
 		sort: {
 			key: sort || 'pos',
 			dir: dir || -1,
@@ -54,10 +47,9 @@ app.get('/', (req, res) => {
 	});
 });	
 
-app.get('/match', (req, res) => {
-	const bets = cacheClient.get("bets");
-	const parsedBets = JSON.parse(bets);
-	const groupedByBet = groupBy(parsedBets, 'matchNumber');
+app.get('/match', async(req, res) => {
+	const { bets } = await runUpdaters();
+	const groupedByBet = groupBy(bets, 'matchNumber');
 
 	const mapped = [];
 
@@ -68,15 +60,15 @@ app.get('/match', (req, res) => {
 		})
 	});
 
+	res.setHeader('Cache-Control', 's-max-age=600, stale-while-revalidate')
 	res.render('pages/match', {
 		data: mapped ,
 	});
 });	
 
-app.get('/placement', (req, res) => {
-	const bets = cacheClient.get("bets");
-	const parsedBets = JSON.parse(bets);
-	const groupedByPosition = groupBy(parsedBets, 'position');
+app.get('/placement', async(req, res) => {
+	const { bets } = await runUpdaters();
+	const groupedByPosition = groupBy(bets, 'position');
 	const mapped = [];
 
 	Object.keys(groupedByPosition).map(function(key) {
@@ -90,6 +82,8 @@ app.get('/placement', (req, res) => {
 			})
 		})
 	});
+
+	res.setHeader('Cache-Control', 's-max-age=600, stale-while-revalidate')
 	res.render('pages/placement', {
 		data: mapped,
 	});

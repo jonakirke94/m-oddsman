@@ -24,9 +24,7 @@
 			</div>
 		</div>
 
-
-
-		<nav class="h-full overflow-y-auto" aria-label="Directory">
+		<div class="overflow-y-auto" style="height: calc(100vh - 128px)">
 			<div class="relative">
 				<% data.forEach(function(item, index){ %>
 					<div
@@ -90,12 +88,12 @@
 					</ul>
 					<% }); %>
 			</div>
-		</nav>
+			</nav>
 
+
+		</div>
 
 		<%- include('../partials/footer', { active: 'match' }); %>
-	</div>
-
 
 
 </body>
